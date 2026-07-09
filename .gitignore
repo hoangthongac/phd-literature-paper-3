@@ -32,5 +32,5 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
-# === Dữ liệu tạm Horizon (tuỳ chọn giữ lại) ===
-# data/summaries/
+# === Dữ liệu crawl tạm (không commit — crawler tự tạo thư mục khi chạy) ===
+data/
