@@ -1,0 +1,36 @@
+# === Secrets (KHÔNG BAO GIỜ commit) ===
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# === Node / Next.js ===
+node_modules/
+.next/
+out/
+build/
+dist/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# === Python / Horizon ===
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.uv/
+
+# === Supabase CLI cache tạm ===
+supabase/.temp/
+supabase/.branches/
+
+# === Logs & OS ===
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# === Dữ liệu tạm Horizon (tuỳ chọn giữ lại) ===
+# data/summaries/
