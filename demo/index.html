@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conformal Prediction cho Dự báo Năng lượng Tái tạo — Tổng quan hệ thống (PRISMA)</title>
+  <meta name="description" content="Paper 3 — Tổng quan hệ thống về Conformal Prediction trong dự báo năng lượng tái tạo có định lượng bất định. Hoàng Trung Thông, NCS HUTECH." />
+  <meta property="og:title" content="Conformal Prediction cho Dự báo Năng lượng Tái tạo — Tổng quan hệ thống" />
+  <meta property="og:description" content="Sàng lọc PRISMA trên 1043 công bố từ 10 nguồn học thuật (2017–2026). Định vị 5 khoảng trống nghiên cứu." />
+  <meta property="og:type" content="article" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --navy: #0f2a4a; --navy-light: #1c4270; --accent: #2f6db3;
+      --ink: #1a2230; --muted: #5b6572; --line: #e2e8f0;
+      --bg: #ffffff; --bg-soft: #f6f8fb; --radius: 14px; --maxw: 900px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: "Inter", system-ui, -apple-system, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    header.hero { background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%); color: #fff; padding: 68px 0 56px; }
+    .eyebrow { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: #9fc0e4; font-weight: 600; }
+    header.hero h1 { font-family: "Lora", serif; font-size: 2.3rem; line-height: 1.18; margin: 10px 0 14px; max-width: 720px; }
+    header.hero .sub { color: #cfe0f2; font-size: 1.05rem; max-width: 640px; }
+    .author { margin-top: 20px; font-size: .95rem; color: #a9c3e0; }
+    .cta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-block; padding: 11px 20px; border-radius: 10px; font-weight: 600; font-size: .95rem; }
+    .btn-primary { background: #fff; color: var(--navy); }
+    .btn-ghost { border: 1px solid rgba(255,255,255,.3); color: #eaf2fb; }
+    .btn:hover { text-decoration: none; opacity: .92; }
+
+    /* Stat band */
+    .stats { background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+    .stats .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 28px 24px; }
+    .stat { text-align: center; }
+    .stat .num { font-family: "Lora", serif; font-size: 2rem; font-weight: 600; color: var(--navy); }
+    .stat .lbl { font-size: .82rem; color: var(--muted); }
+    @media (max-width: 640px) { .stats .wrap { grid-template-columns: repeat(2, 1fr); } }
+
+    section { padding: 52px 0; border-bottom: 1px solid var(--line); }
+    .section-title { font-family: "Lora", serif; font-size: 1.55rem; color: var(--navy); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+    .section-title::before { content: ""; width: 26px; height: 3px; background: var(--accent); border-radius: 2px; }
+    p.lead { color: var(--muted); font-size: 1.02rem; }
+    p + p { margin-top: 12px; }
+
+    /* Method steps */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 14px; margin-top: 8px; }
+    .step { background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+    .step .n { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--accent); color: #fff; font-weight: 700; font-size: .9rem; }
+    .step h3 { font-size: 1rem; color: var(--navy); margin: 10px 0 4px; }
+    .step p { font-size: .9rem; color: var(--muted); }
+
+    /* Gap table */
+    .gap-grid { display: grid; gap: 12px; }
+    .gap { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); }
+    .gap .tag { font-weight: 700; color: var(--accent); font-family: "Lora", serif; }
+    .gap .desc { font-size: .95rem; }
+    .gap .desc small { color: var(--muted); }
+    .gap .count { text-align: right; }
+    .gap .count b { font-size: 1.4rem; color: var(--navy); }
+    .gap .count small { display: block; font-size: .72rem; color: var(--muted); }
+    .gap.hot { border-color: #f0c98a; background: #fff8ec; }
+    .bar { height: 6px; border-radius: 3px; background: var(--accent); margin-top: 6px; }
+
+    /* Paper list */
+    .papers { display: grid; gap: 10px; }
+    .paper { padding: 12px 16px; border: 1px solid var(--line); border-radius: 10px; }
+    .paper .pt { font-weight: 600; font-size: .95rem; }
+    .paper .pm { font-size: .82rem; color: var(--muted); margin-top: 2px; }
+    .chip { display: inline-block; font-size: .72rem; padding: 2px 8px; border-radius: 6px; background: var(--bg-soft); border: 1px solid var(--line); color: var(--navy-light); margin-right: 4px; }
+
+    /* Sources */
+    .srcs { display: flex; flex-wrap: wrap; gap: 8px; }
+    .srcs span { background: var(--bg-soft); border: 1px solid var(--line); padding: 6px 12px; border-radius: 8px; font-size: .85rem; color: var(--navy-light); }
+    .srcs b { color: var(--navy); }
+
+    /* QR */
+    .qr-box { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+    .qr-box img { width: 150px; height: 150px; background: #fff; border-radius: 10px; padding: 8px; border: 1px solid var(--line); }
+    .qr-box .qt { flex: 1; min-width: 220px; }
+
+    .note { background: #fff8e6; border: 1px solid #f0dca0; color: #7a5b12; border-radius: 10px; padding: 12px 16px; font-size: .88rem; margin-top: 18px; }
+
+    footer { background: var(--navy); color: #b8cbe0; text-align: center; padding: 26px 0; font-size: .85rem; }
+    footer a { color: #dce8f5; }
+  </style>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Tổng quan hệ thống · PRISMA 2020</div>
+      <h1>Conformal Prediction cho Dự báo Năng lượng Tái tạo có Định lượng Bất định</h1>
+      <p class="sub">
+        Rà soát có hệ thống họ phương pháp Conformal Prediction (CP, CQR, ACI, Conformal PID…)
+        áp dụng cho dự báo điện mặt trời, điện gió, phụ tải và giá điện — giai đoạn 2017–2026.
+      </p>
+      <div class="author">Hoàng Trung Thông · Nghiên cứu sinh Kỹ thuật điện, HUTECH</div>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://dashboard-hoangthongacs-projects.vercel.app" target="_blank" rel="noreferrer">📊 Mở dashboard tương tác</a>
+        <a class="btn btn-ghost" href="#gaps">Xem khoảng trống nghiên cứu ↓</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="wrap">
+      <div class="stat"><div class="num">1043</div><div class="lbl">công bố sàng lọc</div></div>
+      <div class="stat"><div class="num">10</div><div class="lbl">nguồn học thuật</div></div>
+      <div class="stat"><div class="num">141</div><div class="lbl">được nhận (INCLUDE)</div></div>
+      <div class="stat"><div class="num">2017–26</div><div class="lbl">khung thời gian</div></div>
+    </div>
+  </div>
+
+  <main>
+    <section id="goal">
+      <div class="wrap">
+        <h2 class="section-title">Mục tiêu</h2>
+        <p class="lead">
+          Dự báo năng lượng tái tạo trong điều kiện biến động cao đòi hỏi không chỉ giá trị điểm mà cả
+          <strong>khoảng dự báo đáng tin cậy</strong>. Conformal Prediction là khung định lượng bất định
+          không phụ thuộc phân phối, có bảo đảm phủ (coverage) hữu hạn mẫu — ngày càng được áp dụng cho bài toán này.
+        </p>
+        <p>
+          Tổng quan này rà soát có hệ thống toàn bộ họ CP trong dự báo năng lượng tái tạo, xác định các
+          <strong>khoảng trống nghiên cứu</strong> mà cộng đồng chưa giải quyết — đặc biệt cho bối cảnh khí hậu nhiệt đới.
+        </p>
+      </div>
+    </section>
+
+    <section id="method">
+      <div class="wrap">
+        <h2 class="section-title">Phương pháp — PRISMA 2020</h2>
+        <div class="steps">
+          <div class="step"><span class="n">1</span><h3>Xác định</h3><p>Truy vấn 12-term (họ CP × miền năng lượng × ngữ cảnh dự báo) trên 10 nguồn.</p></div>
+          <div class="step"><span class="n">2</span><h3>Loại trùng</h3><p>Gộp 1150 bản ghi thô → tập hợp duy nhất theo DOI/tiêu đề.</p></div>
+          <div class="step"><span class="n">3</span><h3>Sàng lọc</h3><p>Áp tiêu chí IC/EC trên tiêu đề–tóm tắt để lọc đúng CP × năng lượng.</p></div>
+          <div class="step"><span class="n">4</span><h3>Định vị gap</h3><p>Phân loại các bài được nhận theo 5 khoảng trống G1–G5.</p></div>
+        </div>
+        <div class="srcs" style="margin-top:20px">
+          <span><b>Springer</b> 291</span><span><b>CrossRef</b> 217</span><span><b>arXiv</b> 178</span>
+          <span><b>Semantic Scholar</b> 143</span><span><b>Web of Science</b> 117</span><span><b>Scopus</b> 92</span>
+          <span><b>ScienceDirect</b> 68</span><span><b>IEEE Xplore</b> 37</span><span><b>CORE</b> 29</span><span><b>Google Scholar</b> 15</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="gaps">
+      <div class="wrap">
+        <h2 class="section-title">5 khoảng trống nghiên cứu</h2>
+        <p class="lead" style="margin-bottom:20px">Số bài trong ngoặc là số công bố được nhận/cần xét khớp từng gap — cho thấy mức độ thưa của các hướng cốt lõi.</p>
+        <div class="gap-grid">
+          <div class="gap hot">
+            <span class="tag">G1</span>
+            <span class="desc">ACI + PINN (physics-informed) cho năng lượng tái tạo, đặc biệt nhiệt đới<br><small>Hướng cốt lõi — gần như chưa có nghiên cứu cho khí hậu nhiệt đới</small><div class="bar" style="width:26%"></div></span>
+            <span class="count"><b>13</b><small>công bố</small></span>
+          </div>
+          <div class="gap hot">
+            <span class="tag">G3</span>
+            <span class="desc">Phân tách bất định aleatoric/epistemic cho điện mặt trời<br><small>Khoảng trống rõ rệt nhất — chỉ 1 công bố khớp</small><div class="bar" style="width:4%"></div></span>
+            <span class="count"><b>1</b><small>công bố</small></span>
+          </div>
+          <div class="gap">
+            <span class="tag">G2</span>
+            <span class="desc">Benchmark probabilistic cho vùng nhiệt đới / Việt Nam / ĐNÁ<div class="bar" style="width:8%"></div></span>
+            <span class="count"><b>4</b><small>công bố</small></span>
+          </div>
+          <div class="gap">
+            <span class="tag">G4</span>
+            <span class="desc">PINN + Conformal/ACI cho điện mặt trời<div class="bar" style="width:8%"></div></span>
+            <span class="count"><b>4</b><small>công bố</small></span>
+          </div>
+          <div class="gap">
+            <span class="tag">G5</span>
+            <span class="desc">CP + Transformer/KAN + tính giải thích<div class="bar" style="width:32%"></div></span>
+            <span class="count"><b>16</b><small>công bố</small></span>
+          </div>
+        </div>
+        <div class="note">
+          ⚠️ Phân loại gap ở đây do AI hỗ trợ đối chiếu trên metadata (tiêu đề, tạp chí, năm) và là kết quả
+          <strong>sàng lọc sơ bộ</strong>, không thay cho đọc toàn văn. Các con số cần kiểm chứng full-text trong bản thảo chính thức.
+        </div>
+      </div>
+    </section>
+
+    <section id="highlights">
+      <div class="wrap">
+        <h2 class="section-title">Công bố tiêu biểu khớp gap</h2>
+        <div class="papers">
+          <div class="paper"><div class="pt">Physics-Informed Adaptive Conformal Prediction for Wind Power under Dynamic Weather Regimes</div><div class="pm"><span class="chip">G1</span><span class="chip">Wind</span> 2026 · IEEE Trans. Industry Applications · <a href="https://doi.org/10.1109/tia.2026.3653910" target="_blank" rel="noreferrer">DOI</a></div></div>
+          <div class="paper"><div class="pt">Model-Agnostic, Probabilistic, Hour-Ahead Solar PV Forecasting Using Adaptive Conformal Inference</div><div class="pm"><span class="chip">G1</span><span class="chip">Solar</span> 2026 · Energies · <a href="https://doi.org/10.3390/en19061495" target="_blank" rel="noreferrer">DOI</a></div></div>
+          <div class="paper"><div class="pt">Physics-constrained neural networks for reliable solar power forecasting with uncertainty quantification</div><div class="pm"><span class="chip">G4</span><span class="chip">Solar</span> 2026 · Results in Engineering · <a href="https://doi.org/10.1016/j.rineng.2026.109521" target="_blank" rel="noreferrer">DOI</a></div></div>
+          <div class="paper"><div class="pt">Comparative analysis of conformal prediction techniques for very short-term solar power forecasting</div><div class="pm"><span class="chip">G2</span><span class="chip">Solar</span> 2025 · Energy and AI · <a href="https://doi.org/10.1016/j.egyai.2025.100573" target="_blank" rel="noreferrer">DOI</a></div></div>
+          <div class="paper"><div class="pt">Mamba based adaptive conformal inference for probabilistic short-term load forecasting</div><div class="pm"><span class="chip">G5</span><span class="chip">Load</span> 2025 · Knowledge-Based Systems · <a href="https://doi.org/10.1016/j.knosys.2025.114222" target="_blank" rel="noreferrer">DOI</a></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="qr">
+      <div class="wrap">
+        <h2 class="section-title">Chia sẻ & tương tác</h2>
+        <div class="qr-box">
+          <img id="qr" alt="QR code mở trang này" />
+          <div class="qt">
+            <strong>Quét mã QR</strong> để mở trang trên điện thoại, hoặc mở
+            <a href="https://dashboard-hoangthongacs-projects.vercel.app" target="_blank" rel="noreferrer">dashboard tương tác</a>
+            để lọc/tìm kiếm toàn bộ 1043 công bố theo gap, nguồn, loại năng lượng và điểm liên quan.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> Hoàng Trung Thông · NCS Kỹ thuật điện, HUTECH ·
+      <a href="https://dashboard-hoangthongacs-projects.vercel.app">Dashboard</a><br />
+      Dữ liệu tổng hợp từ 10 nguồn học thuật (2017–2026). Tóm tắt & phân loại có AI hỗ trợ — kiểm chứng bản gốc trước khi trích dẫn.
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    // QR trỏ tới chính URL hiện tại — sinh sau khi biết domain thật.
+    (function () {
+      var here = window.location.origin + window.location.pathname;
+      var api = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data=" + encodeURIComponent(here);
+      document.getElementById("qr").src = api;
+    })();
+  </script>
+</body>
+</html>
