@@ -75,9 +75,7 @@
     .avatar {
       width: 132px; height: 132px; flex-shrink: 0;
       border-radius: 50%;
-      background: linear-gradient(135deg, #3d7fc4, #6aa4dd);
-      display: grid; place-items: center;
-      font-family: "Lora", serif; font-size: 3rem; font-weight: 600; color: #fff;
+      object-fit: cover; object-position: center;
       border: 3px solid rgba(255, 255, 255, 0.25);
       box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
     }
@@ -191,11 +189,11 @@
 
   <header class="hero">
     <div class="wrap">
-      <div class="avatar">HT</div>
+      <img class="avatar" src="avatar.jpg" alt="Hoàng Trung Thông" />
       <div class="hero-text">
         <h1>Hoàng Trung Thông</h1>
         <div class="role">Nghiên cứu sinh — Ngành Kỹ thuật điện</div>
-        <div class="aff">Trường Đại học Công nghệ TP.HCM (HUTECH)</div>
+        <div class="aff">Viện Kỹ thuật · Trường Đại học Công nghệ TP.HCM (HUTECH)</div>
         <div class="hero-badges">
           <span class="badge">Deep Learning</span>
           <span class="badge">Renewable Energy Forecasting</span>
@@ -237,15 +235,14 @@
         <h2 class="section-title">Học vấn</h2>
         <div class="timeline">
           <div class="tl-item">
-            <div class="yr">2024 — nay</div>
+            <div class="yr">05/2026 — nay</div>
             <h3>Nghiên cứu sinh, ngành Kỹ thuật điện</h3>
-            <div class="place">Trường Đại học Công nghệ TP.HCM (HUTECH) · Mã số NCS 2542833002</div>
+            <div class="place">Viện Kỹ thuật · Trường Đại học Công nghệ TP.HCM (HUTECH) · Mã số NCS 2542833002</div>
           </div>
-          <!-- Bổ sung bậc Thạc sĩ / Đại học của bạn ở đây -->
           <div class="tl-item">
-            <div class="yr">— — —</div>
-            <h3>Thạc sĩ / Kỹ sư <em style="color:var(--muted);font-weight:400">(cập nhật thông tin của bạn)</em></h3>
-            <div class="place">Tên trường · Chuyên ngành · Năm tốt nghiệp</div>
+            <div class="yr">2025</div>
+            <h3>Thạc sĩ Kỹ thuật điện</h3>
+            <div class="place">Trường Đại học Công nghệ TP.HCM (HUTECH)</div>
           </div>
         </div>
       </div>
@@ -278,17 +275,15 @@
     <section id="publications">
       <div class="wrap">
         <h2 class="section-title">Công bố khoa học</h2>
-        <div class="note">
-          ✍️ Phần này để trống chờ bạn cập nhật công bố thật. Hãy thay các mục mẫu bên dưới bằng
-          bài báo/hội nghị của bạn (kèm DOI). <strong>Không dùng dữ liệu bịa.</strong>
-        </div>
         <div class="pub">
-          <div class="pub-title">Tiêu đề bài báo của bạn</div>
-          <div class="pub-meta">Tác giả · Tên tạp chí / hội nghị · Năm · <a href="#">DOI</a></div>
-        </div>
-        <div class="pub">
-          <div class="pub-title">Tiêu đề bài báo tiếp theo</div>
-          <div class="pub-meta">Tác giả · Tên tạp chí / hội nghị · Năm · <a href="#">DOI</a></div>
+          <div class="pub-title">The Application of Time Series Models Considering Seasonality in Monthly Electricity Production Forecasting</div>
+          <div class="pub-meta">
+            T. T. Hoang et al. · 2024 7th International Conference on Green Technology and Sustainable Development (GTSD), Ho Chi Minh City, Vietnam · 2024 · pp. 200–206 ·
+            <a href="https://doi.org/10.1109/GTSD62346.2024.10675225" target="_blank" rel="noopener noreferrer">doi:10.1109/GTSD62346.2024.10675225</a>
+          </div>
+          <div class="pub-meta" style="margin-top:6px">
+            <em>Từ khóa:</em> Electricity Production Forecasting · N-BEATS · FB-Prophet · SARIMA · Holt-Winters
+          </div>
         </div>
       </div>
     </section>
@@ -308,16 +303,16 @@
             <span class="ico">🏛️</span>
             <span>
               <span class="lbl">Đơn vị</span><br />
-              <span class="val">HUTECH — Khoa Điện</span>
+              <span class="val">HUTECH — Viện Kỹ thuật</span>
             </span>
           </div>
-          <div class="contact-item">
+          <a class="contact-item" href="https://orcid.org/0009-0005-4391-8940" target="_blank" rel="noopener noreferrer" aria-label="Trang ORCID của Hoàng Trung Thông">
             <span class="ico">🔬</span>
             <span>
-              <span class="lbl">ORCID / Scholar</span><br />
-              <span class="val">(cập nhật liên kết của bạn)</span>
+              <span class="lbl">ORCID</span><br />
+              <span class="val">0009-0005-4391-8940</span>
             </span>
-          </div>
+          </a>
         </div>
       </div>
     </section>
