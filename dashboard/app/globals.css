@@ -2,8 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hệ NVIDIA: thân trắng, chữ đen, Inter */
 body {
-  background: #f6f8fb;
-  color: #1a2230;
+  background: #ffffff;
+  color: #000000;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Corner-square xanh — dấu hiệu nhận diện NVIDIA trên card */
+.ds-card { position: relative; }
+.ds-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  background: #76b900;
 }

@@ -27,12 +27,12 @@ function Select({
   label, value, onChange, children,
 }: { label: string; value: string; onChange: (v: string) => void; children: React.ReactNode }) {
   return (
-    <label className="flex flex-col gap-1 text-xs text-slate-500">
+    <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-mute">
       {label}
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-700 focus:border-accent focus:outline-none"
+        className="rounded-sm border border-hairline bg-canvas px-2.5 py-2 text-sm font-normal normal-case text-ink focus:border-primary focus:outline-none"
       >
         {children}
       </select>
@@ -44,18 +44,18 @@ export default function FilterBar({ filters, onChange, sources }: Props) {
   const set = (patch: Partial<Filters>) => onChange({ ...filters, ...patch });
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <div className="border border-hairline bg-canvas p-5">
       {/* Search */}
       <input
         type="search"
         value={filters.q}
         onChange={(e) => set({ q: e.target.value })}
-        placeholder="🔎 Tìm trong tiêu đề, tác giả, tóm tắt..."
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-accent focus:outline-none"
+        placeholder="Tìm trong tiêu đề, tác giả, tóm tắt..."
+        className="w-full rounded-sm border border-hairline px-3 py-2.5 text-sm focus:border-primary focus:outline-none"
       />
 
       {/* Filters */}
-      <div className="mt-3 flex flex-wrap gap-3">
+      <div className="mt-4 flex flex-wrap gap-3">
         <Select label="Gap" value={filters.gap} onChange={(v) => set({ gap: v })}>
           <option value="">Tất cả gap</option>
           {Object.entries(GAP_LABELS).map(([k, v]) => (
@@ -97,8 +97,9 @@ export default function FilterBar({ filters, onChange, sources }: Props) {
         </Select>
 
         <button
+          type="button"
           onClick={() => onChange(DEFAULT_FILTERS)}
-          className="self-end rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50"
+          className="self-end rounded-sm border border-hairline px-3 py-2 text-sm font-semibold text-body hover:border-primary hover:text-ink"
         >
           Xóa lọc
         </button>

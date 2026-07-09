@@ -2,10 +2,10 @@ import { Paper } from "@/lib/types";
 
 function Card({ label, value, hint }: { label: string; value: string | number; hint?: string }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
-      <div className="text-2xl font-bold text-navy">{value}</div>
-      <div className="text-sm text-slate-500">{label}</div>
-      {hint && <div className="mt-1 text-xs text-slate-400">{hint}</div>}
+    <div className="ds-card border border-hairline bg-canvas p-5">
+      <div className="text-3xl font-bold text-ink leading-none">{value}</div>
+      <div className="mt-2 text-sm text-mute">{label}</div>
+      {hint && <div className="mt-1 text-xs text-mute">{hint}</div>}
     </div>
   );
 }
@@ -16,7 +16,7 @@ export default function StatsCards({ all, filtered }: { all: Paper[]; filtered: 
   const gapHits = filtered.filter((p) => p.gap_mapped && p.gap_mapped !== "none").length;
 
   return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       <Card label="Paper hiển thị" value={filtered.length} hint={`/ ${all.length} tổng`} />
       <Card label="Được nhận (INCLUDE)" value={include} />
       <Card label="Khớp gap G1–G5" value={gapHits} />

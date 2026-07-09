@@ -71,66 +71,100 @@ export default function Dashboard() {
   useEffect(() => setVisible(PAGE_SIZE), [filters]);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-6">
-      {/* Header */}
-      <header className="mb-5">
-        <h1 className="text-2xl font-bold text-navy">
-          🔬 Research Radar — Conformal Prediction × Renewable Energy
-        </h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Theo dõi văn liệu cho PRISMA Paper 3 · Hoàng Trung Thông, NCS HUTECH · dữ liệu từ 10 nguồn học thuật, tóm tắt do AI (DeepSeek) sinh — nên đọc bản gốc.
-        </p>
-      </header>
-
-      {loading && (
-        <div className="grid place-items-center rounded-xl border border-slate-200 bg-white py-20 text-slate-400">
-          Đang tải dữ liệu từ Supabase…
+    <>
+      {/* Utility bar + nav (đen, hệ NVIDIA) */}
+      <div className="bg-surface-dark text-on-dark">
+        <div className="mx-auto flex h-8 max-w-6xl items-center justify-between px-4 text-xs text-white/70">
+          <span>Research Radar · PRISMA Paper 3</span>
+          <span>HUTECH — Viện Kỹ thuật</span>
         </div>
-      )}
-
-      {error && (
-        <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
-          Lỗi tải dữ liệu: {error}
+      </div>
+      <nav className="border-b border-hairline-strong bg-surface-dark text-on-dark">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+          <span className="flex items-center gap-2.5 text-[17px] font-bold">
+            <span className="h-3.5 w-3.5 bg-primary" /> Research Radar
+          </span>
+          <a
+            href="https://demo-hoangthongacs-projects.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold text-white hover:text-primary"
+          >
+            Trang giới thiệu ↗
+          </a>
         </div>
-      )}
+      </nav>
 
-      {!loading && !error && (
-        <div className="space-y-4">
-          <StatsCards all={papers} filtered={filtered} />
-          <Charts papers={filtered} />
-          <FilterBar filters={filters} onChange={setFilters} sources={sources} years={years} />
+      <main className="mx-auto max-w-6xl px-4 py-8">
+        {/* Header */}
+        <header className="mb-6">
+          <div className="mb-2 text-xs font-bold uppercase tracking-wide text-primary">
+            Conformal Prediction × Renewable Energy Forecasting
+          </div>
+          <h1 className="text-3xl font-bold leading-tight text-ink">
+            Dashboard theo dõi văn liệu
+          </h1>
+          <p className="mt-2 max-w-3xl text-sm text-body">
+            Theo dõi văn liệu cho PRISMA Paper 3 · Hoàng Trung Thông, NCS HUTECH · dữ liệu từ 10 nguồn học thuật.
+            Tóm tắt & điểm liên quan do AI (DeepSeek) sinh — nên đọc bản gốc.
+          </p>
+        </header>
 
-          {/* Danh sách paper */}
-          {filtered.length === 0 ? (
-            <div className="grid place-items-center rounded-xl border border-slate-200 bg-white py-16 text-slate-400">
-              Không có paper nào khớp bộ lọc.
-            </div>
-          ) : (
-            <>
-              <div className="space-y-3">
-                {filtered.slice(0, visible).map((p) => (
-                  <PaperCard key={p.id} p={p} />
-                ))}
+        {loading && (
+          <div className="grid place-items-center border border-hairline bg-canvas py-20 text-mute">
+            Đang tải dữ liệu từ Supabase…
+          </div>
+        )}
+
+        {error && (
+          <div className="border border-hairline border-l-2 border-l-red-600 bg-surface-soft p-4 text-sm text-body">
+            Lỗi tải dữ liệu: {error}
+          </div>
+        )}
+
+        {!loading && !error && (
+          <div className="space-y-4">
+            <StatsCards all={papers} filtered={filtered} />
+            <Charts papers={filtered} />
+            <FilterBar filters={filters} onChange={setFilters} sources={sources} years={years} />
+
+            {/* Danh sách paper */}
+            {filtered.length === 0 ? (
+              <div className="grid place-items-center border border-hairline bg-canvas py-16 text-mute">
+                Không có paper nào khớp bộ lọc.
               </div>
-              {visible < filtered.length && (
-                <div className="flex justify-center pt-2">
-                  <button
-                    onClick={() => setVisible((v) => v + PAGE_SIZE)}
-                    className="rounded-lg border border-slate-300 bg-white px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                  >
-                    Xem thêm ({filtered.length - visible} paper)
-                  </button>
+            ) : (
+              <>
+                <div className="space-y-3">
+                  {filtered.slice(0, visible).map((p) => (
+                    <PaperCard key={p.id} p={p} />
+                  ))}
                 </div>
-              )}
-            </>
-          )}
-        </div>
-      )}
+                {visible < filtered.length && (
+                  <div className="flex justify-center pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                      className="border border-primary bg-primary px-6 py-2.5 text-sm font-bold text-ink hover:bg-primary-dark"
+                    >
+                      Xem thêm ({filtered.length - visible} paper)
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </main>
 
-      <footer className="mt-10 border-t border-slate-200 pt-4 text-center text-xs text-slate-400">
-        Dữ liệu: WoS · Scopus · ScienceDirect · IEEE · Springer · CORE · Semantic Scholar · CrossRef · arXiv · Google Scholar.
-        Tóm tắt & điểm liên quan do AI sinh — kiểm chứng với bản gốc trước khi trích dẫn.
+      <footer className="border-t border-hairline-strong bg-surface-dark py-10 text-white/70">
+        <div className="mx-auto max-w-6xl px-4 text-[13px] leading-relaxed">
+          Dữ liệu: WoS · Scopus · ScienceDirect · IEEE · Springer · CORE · Semantic Scholar · CrossRef · arXiv · Google Scholar.
+          <div className="mt-2 text-[10px] uppercase tracking-wide text-mute">
+            Tóm tắt & điểm liên quan do AI sinh — kiểm chứng với bản gốc trước khi trích dẫn.
+          </div>
+        </div>
       </footer>
-    </main>
+    </>
   );
 }
