@@ -105,14 +105,14 @@ export default function Dashboard() {
     <>
       {/* Utility bar + nav (đen, hệ NVIDIA) */}
       <div className="bg-surface-dark text-on-dark">
-        <div className="mx-auto flex h-8 max-w-6xl items-center justify-between px-4 text-xs text-white/70">
+        <div className="mx-auto flex h-8 max-w-[1200px] items-center justify-between px-4 text-xs text-white/70">
           <span>Research Radar · PRISMA Paper 3</span>
           <span>HUTECH — Viện Kỹ thuật</span>
         </div>
       </div>
       <nav className="border-b border-hairline-strong bg-surface-dark text-on-dark">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-          <span className="flex items-center gap-2.5 text-[17px] font-bold">
+        <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4">
+          <span className="flex items-center gap-2.5 text-lg font-bold">
             <span className="h-3.5 w-3.5 bg-primary" /> Research Radar
           </span>
           <a
@@ -126,16 +126,16 @@ export default function Dashboard() {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-6xl px-4 py-8">
+      <main className="mx-auto max-w-[1200px] px-4 py-8 sm:py-10">
         {/* Header */}
         <header className="mb-6">
-          <div className="mb-2 text-xs font-bold uppercase tracking-wide text-primary">
+          <div className="mb-3 text-xs font-bold uppercase tracking-wide text-primary sm:text-sm">
             Conformal Prediction × Renewable Energy Forecasting
           </div>
-          <h1 className="text-3xl font-bold leading-tight text-ink">
+          <h1 className="text-3xl font-bold leading-tight text-ink sm:text-4xl md:text-5xl">
             Dashboard theo dõi văn liệu
           </h1>
-          <p className="mt-2 max-w-3xl text-sm text-body">
+          <p className="mt-3 max-w-4xl text-sm leading-relaxed text-body sm:text-base">
             Theo dõi văn liệu cho PRISMA Paper 3 · Hoàng Trung Thông, NCS HUTECH · dữ liệu từ 10 nguồn học thuật.
             Tóm tắt & điểm liên quan do AI (DeepSeek) sinh — nên đọc bản gốc.
           </p>
@@ -189,7 +189,7 @@ export default function Dashboard() {
       </main>
 
       <footer className="border-t border-hairline-strong bg-surface-dark py-10 text-white/70">
-        <div className="mx-auto max-w-6xl px-4 text-[13px] leading-relaxed">
+        <div className="mx-auto max-w-[1200px] px-4 text-[13px] leading-relaxed">
           Dữ liệu: WoS · Scopus · ScienceDirect · IEEE · Springer · CORE · Semantic Scholar · CrossRef · arXiv · Google Scholar.
           <div className="mt-2 text-[10px] uppercase tracking-wide text-mute">
             Tóm tắt & điểm liên quan do AI sinh — kiểm chứng với bản gốc trước khi trích dẫn.

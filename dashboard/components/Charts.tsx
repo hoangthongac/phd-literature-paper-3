@@ -94,12 +94,12 @@ function Panel({
     <section className={`border border-hairline bg-canvas ${className}`}>
       <div className="flex min-h-20 items-start justify-between gap-4 border-b border-hairline bg-surface-soft px-5 py-4">
         <div>
-          <h2 className="text-xs font-bold uppercase tracking-wide text-primary">{title}</h2>
-          {subtitle && <p className="mt-1 text-xs leading-relaxed text-mute">{subtitle}</p>}
+          <h2 className="text-sm font-bold uppercase tracking-wide text-primary">{title}</h2>
+          {subtitle && <p className="mt-1 text-sm leading-relaxed text-mute">{subtitle}</p>}
         </div>
         {stat && <div className="shrink-0 text-right text-2xl font-bold leading-none text-ink">{stat}</div>}
       </div>
-      <div className="p-5">{children}</div>
+      <div className="p-5 md:p-6">{children}</div>
     </section>
   );
 }

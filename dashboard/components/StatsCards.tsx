@@ -19,11 +19,11 @@ function MetricCard({
   emphasis?: boolean;
 }) {
   return (
-    <div className={`border bg-canvas p-4 ${emphasis ? "border-primary" : "border-hairline"}`}>
+    <div className={`border bg-canvas p-4 md:p-5 ${emphasis ? "border-primary" : "border-hairline"}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-[11px] font-bold uppercase tracking-wide text-mute">{label}</div>
-          <div className="mt-2 text-2xl font-bold leading-none text-ink sm:text-3xl">{value}</div>
+          <div className="text-xs font-bold uppercase tracking-wide text-mute">{label}</div>
+          <div className="mt-2 text-2xl font-bold leading-none text-ink sm:text-4xl lg:text-3xl">{value}</div>
         </div>
         <div className={`h-1.5 w-10 ${emphasis ? "bg-primary" : "bg-hairline-strong"}`} />
       </div>

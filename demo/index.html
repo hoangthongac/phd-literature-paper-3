@@ -8,6 +8,9 @@
   <meta property="og:title" content="Conformal Prediction cho Dự báo Năng lượng Tái tạo — Tổng quan hệ thống" />
   <meta property="og:description" content="Sàng lọc PRISMA trên 1043 công bố từ 10 nguồn học thuật (2017–2026). Định vị 5 khoảng trống nghiên cứu." />
   <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://demo-hoangthongacs-projects.vercel.app" />
+  <link rel="canonical" href="https://demo-hoangthongacs-projects.vercel.app" />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23000"/><rect x="6" y="6" width="9" height="9" fill="%2376b900"/><path d="M8 23h16" stroke="%23fff" stroke-width="3"/></svg>' />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -41,6 +44,7 @@
       -webkit-font-smoothing: antialiased;
     }
     .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+    @media (max-width: 560px) { .wrap { padding: 0 20px; } }
 
     a { color: var(--link-blue); }
 
@@ -60,7 +64,12 @@
     nav.primary .links { display: flex; gap: 26px; }
     nav.primary .links a { color: var(--on-dark); text-decoration: none; font-size: 15px; font-weight: 600; }
     nav.primary .links a:hover { color: var(--primary); }
-    @media (max-width: 720px) { nav.primary .links { display: none; } }
+    @media (max-width: 720px) {
+      .utility { height: auto; padding: 10px 0; }
+      .utility .wrap { gap: 12px; font-size: 11px; }
+      nav.primary .links { display: none; }
+      nav.primary .brand { font-size: 17px; }
+    }
 
     /* ===== Hero (đen, full-bleed, copy hugs left) ===== */
     header.hero { background: var(--surface-dark); color: var(--on-dark); padding: 80px 0; position: relative; overflow: hidden; }
@@ -72,7 +81,7 @@
     @media (max-width: 720px) { header.hero::after { display: none; } }
     header.hero .wrap { position: relative; z-index: 1; }
     header.hero .eyebrow { margin-bottom: 16px; }
-    header.hero h1 { font-size: 48px; font-weight: 700; line-height: 1.15; max-width: 760px; letter-spacing: -0.01em; }
+    header.hero h1 { font-size: clamp(42px, 5vw, 64px); font-weight: 700; line-height: 1.12; max-width: 860px; letter-spacing: -0.01em; }
     header.hero .sub { color: var(--on-dark-mute); font-size: 18px; max-width: 620px; margin-top: 18px; line-height: 1.6; }
     header.hero .author { margin-top: 22px; font-size: 15px; color: var(--on-dark-mute); }
     header.hero .author b { color: var(--on-dark); font-weight: 700; }
@@ -82,7 +91,15 @@
     .btn-primary:hover { background: var(--primary-dark); }
     .btn-outline-dark { background: transparent; color: var(--on-dark); border: 1px solid var(--on-dark); }
     .btn-outline-dark:hover { border-color: var(--primary); color: var(--primary); }
-    @media (max-width: 560px) { header.hero h1 { font-size: 32px; } }
+    @media (max-width: 560px) {
+      header.hero { padding: 48px 0 56px; }
+      header.hero .eyebrow { font-size: 12px; line-height: 1.35; }
+      header.hero h1 { font-size: clamp(30px, 8.6vw, 36px); line-height: 1.1; }
+      header.hero .sub { font-size: 15px; line-height: 1.55; }
+      header.hero .author { font-size: 14px; line-height: 1.5; }
+      .cta { gap: 10px; }
+      .btn { width: 100%; justify-content: center; height: 42px; font-size: 15px; padding: 0 16px; }
+    }
 
     /* ===== Stat band (trắng, hairline) ===== */
     .stats { border-bottom: 1px solid var(--hairline); }
@@ -91,7 +108,12 @@
     .stat:first-child { border-left: none; }
     .stat .num { font-size: 36px; font-weight: 700; color: var(--ink); line-height: 1.1; }
     .stat .lbl { font-size: 14px; color: var(--mute); margin-top: 6px; }
-    @media (max-width: 640px) { .stats .wrap { grid-template-columns: repeat(2, 1fr); } .stat:nth-child(3) { border-left: none; } }
+    @media (max-width: 640px) {
+      .stats .wrap { grid-template-columns: repeat(2, 1fr); padding: 0; }
+      .stat { padding: 24px 20px; }
+      .stat:nth-child(3) { border-left: none; }
+      .stat .num { font-size: 34px; }
+    }
 
     /* ===== Sections (trắng, nhịp 64px) ===== */
     section { padding: 64px 0; }
@@ -129,6 +151,11 @@
     .gap .bar { height: 4px; background: var(--primary); margin-top: 8px; border-radius: var(--r); }
     .gap .count b { font-size: 32px; font-weight: 700; color: var(--ink); line-height: 1; }
     .gap .count small { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--mute); letter-spacing: .04em; }
+    @media (max-width: 640px) {
+      .gap { grid-template-columns: 44px 1fr; gap: 12px 16px; padding: 18px 20px; }
+      .gap .count { grid-column: 2; }
+      .gap .count b { font-size: 28px; }
+    }
 
     /* Paper list */
     .papers { display: grid; gap: 12px; }
@@ -174,7 +201,7 @@
         <a href="#method">Phương pháp</a>
         <a href="#gaps">Khoảng trống</a>
         <a href="#highlights">Công bố</a>
-        <a href="https://dashboard-hoangthongacs-projects.vercel.app" target="_blank" rel="noopener noreferrer">Dashboard ↗</a>
+        <a href="https://dashboard-ten-phi-77.vercel.app" target="_blank" rel="noopener noreferrer">Dashboard ↗</a>
       </div>
     </div>
   </nav>
@@ -189,7 +216,7 @@
       </p>
       <div class="author"><b>Hoàng Trung Thông</b> · Nghiên cứu sinh Kỹ thuật điện, HUTECH — Viện Kỹ thuật</div>
       <div class="cta">
-        <a class="btn btn-primary" href="https://dashboard-hoangthongacs-projects.vercel.app" target="_blank" rel="noopener noreferrer">Mở dashboard tương tác</a>
+        <a class="btn btn-primary" href="https://dashboard-ten-phi-77.vercel.app" target="_blank" rel="noopener noreferrer">Mở dashboard tương tác</a>
         <a class="btn btn-outline-dark" href="#gaps">Xem khoảng trống nghiên cứu</a>
       </div>
     </div>
@@ -308,7 +335,7 @@
         <h2>Chia sẻ & khám phá dữ liệu</h2>
         <p>
           Quét mã QR để mở trang trên điện thoại, hoặc mở
-          <a href="https://dashboard-hoangthongacs-projects.vercel.app" target="_blank" rel="noopener noreferrer">dashboard tương tác</a>
+          <a href="https://dashboard-ten-phi-77.vercel.app" target="_blank" rel="noopener noreferrer">dashboard tương tác</a>
           để lọc/tìm kiếm toàn bộ 1043 công bố theo gap, nguồn, loại năng lượng và điểm liên quan.
         </p>
       </div>
@@ -318,7 +345,7 @@
   <footer>
     <div class="wrap">
       © <span id="year"></span> Hoàng Trung Thông · NCS Kỹ thuật điện, HUTECH — Viện Kỹ thuật ·
-      <a href="https://dashboard-hoangthongacs-projects.vercel.app">Dashboard</a> ·
+      <a href="https://dashboard-ten-phi-77.vercel.app">Dashboard</a> ·
       <a href="https://orcid.org/0009-0005-4391-8940">ORCID</a>
       <div class="fine">
         Dữ liệu tổng hợp từ 10 nguồn học thuật (2017–2026). Tóm tắt & phân loại có AI hỗ trợ — kiểm chứng bản gốc trước khi trích dẫn.
@@ -329,7 +356,9 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
     (function () {
-      var here = window.location.origin + window.location.pathname;
+      var here = window.location.protocol === "file:"
+        ? "https://demo-hoangthongacs-projects.vercel.app"
+        : window.location.origin + window.location.pathname;
       document.getElementById("qr").src =
         "https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data=" + encodeURIComponent(here);
     })();
