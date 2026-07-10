@@ -8,12 +8,13 @@ export type Filters = {
   energy: string;
   decision: string;
   source: string;
+  year: string;
   minScore: number;
   sort: string;
 };
 
 export const DEFAULT_FILTERS: Filters = {
-  q: "", gap: "", energy: "", decision: "", source: "", minScore: 0, sort: "year_desc",
+  q: "", gap: "", energy: "", decision: "", source: "", year: "", minScore: 0, sort: "year_desc",
 };
 
 type Props = {
@@ -40,7 +41,7 @@ function Select({
   );
 }
 
-export default function FilterBar({ filters, onChange, sources }: Props) {
+export default function FilterBar({ filters, onChange, sources, years }: Props) {
   const set = (patch: Partial<Filters>) => onChange({ ...filters, ...patch });
 
   return (
@@ -81,6 +82,13 @@ export default function FilterBar({ filters, onChange, sources }: Props) {
           <option value="">Tất cả nguồn</option>
           {sources.map((s) => (
             <option key={s} value={s}>{s}</option>
+          ))}
+        </Select>
+
+        <Select label="Năm" value={filters.year} onChange={(v) => set({ year: v })}>
+          <option value="">Tất cả năm</option>
+          {years.map((y) => (
+            <option key={y} value={String(y)}>{y}</option>
           ))}
         </Select>
 

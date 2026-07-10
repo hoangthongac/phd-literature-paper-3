@@ -1,6 +1,6 @@
 "use client";
 
-import { Paper, GAP_LABELS } from "@/lib/types";
+import { Paper, GAP_LABELS, DECISION_LABELS } from "@/lib/types";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, LabelList,
   AreaChart, Area, CartesianGrid,
@@ -11,6 +11,17 @@ const GREEN_DARK = "#5a8d00";
 const INK = "#1a1a1a";
 const GRAY = "#cccccc";
 const MUTE = "#757575";
+const DECISION_COLORS = ["#76b900", "#a7a7a7", "#5e5e5e", "#757575", "#898989", "#a0a0a0", "#b5b5b5", "#d0d0d0", "#1a1a1a"];
+
+type TooltipPayload = {
+  value?: number | string;
+};
+
+type DsTooltipProps = {
+  active?: boolean;
+  payload?: TooltipPayload[];
+  label?: string | number;
+};
 
 function countBy<T extends string | number>(items: Paper[], key: (p: Paper) => T | null | undefined) {
   const m = new Map<T, number>();
@@ -23,7 +34,7 @@ function countBy<T extends string | number>(items: Paper[], key: (p: Paper) => T
 }
 
 /* Tooltip theo hệ NVIDIA: nền đen, viền xanh, góc vuông */
-function DsTooltip({ active, payload, label }: any) {
+function DsTooltip({ active, payload, label }: DsTooltipProps) {
   if (!active || !payload?.length) return null;
   return (
     <div className="border border-primary bg-surface-dark px-3 py-2 text-xs text-on-dark">
@@ -70,17 +81,28 @@ export default function Charts({ papers }: { papers: Paper[] }) {
 
   // 4) Phân bố IC/EC — thanh ngang xếp chồng (stacked bar trực quan)
   const dec = countBy(papers, (p) => p.ic_ec_decision);
-  const decOrder = [
-    { key: "INCLUDE", label: "Nhận", color: GREEN },
-    { key: "borderline", label: "Cần xét", color: "#a7a7a7" },
-    { key: "EC2", label: "EC2", color: "#5e5e5e" },
-    { key: "EC3", label: "EC3", color: "#757575" },
-    { key: "EC4", label: "EC4", color: "#898989" },
-  ];
+  const compactDecisionLabel = (key: string) => {
+    if (key === "INCLUDE") return "Nhận";
+    if (key === "borderline") return "Cần xét";
+    if (key.startsWith("EC")) return key;
+    return DECISION_LABELS[key] ?? key;
+  };
+  const knownDecisionKeys = new Set(Object.keys(DECISION_LABELS));
   const decTotal = papers.filter((p) => p.ic_ec_decision).length;
-  const decSegs = decOrder
-    .map((d) => ({ ...d, n: dec.get(d.key) ?? 0 }))
+  const decSegs = Object.keys(DECISION_LABELS)
+    .map((key, index) => ({
+      key,
+      label: compactDecisionLabel(key),
+      color: DECISION_COLORS[index % DECISION_COLORS.length],
+      n: dec.get(key) ?? 0,
+    }))
     .filter((d) => d.n > 0);
+  const otherDecisionCount = Array.from(dec)
+    .filter(([key]) => !knownDecisionKeys.has(String(key)))
+    .reduce((sum, [, n]) => sum + n, 0);
+  if (otherDecisionCount > 0) {
+    decSegs.push({ key: "other", label: "Khác", color: "#333333", n: otherDecisionCount });
+  }
 
   const empty = <div className="grid h-full place-items-center text-sm text-mute">Chưa có dữ liệu</div>;
 

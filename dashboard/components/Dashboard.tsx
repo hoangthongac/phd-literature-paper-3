@@ -9,6 +9,9 @@ import Charts from "./Charts";
 import PaperCard from "./PaperCard";
 
 const PAGE_SIZE = 30;
+const FETCH_PAGE_SIZE = 1000;
+const PAPER_COLUMNS =
+  "id,title,authors,abstract,url,doi,venue,year,document_type,source,sources_seen,occurrences,ai_score,ai_summary_vi,ai_rationale,gap_mapped,energy_type,uq_method,ic_ec_decision,published_at,created_at";
 
 export default function Dashboard() {
   const [papers, setPapers] = useState<Paper[]>([]);
@@ -16,22 +19,52 @@ export default function Dashboard() {
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [visible, setVisible] = useState(PAGE_SIZE);
+  const handleFiltersChange = (nextFilters: Filters) => {
+    setFilters(nextFilters);
+    setVisible(PAGE_SIZE);
+  };
 
-  // Fetch toàn bộ papers (client-side filter cho mượt; corpus ~1k dòng nên OK)
+  // Fetch toàn bộ papers theo từng trang để không cắt cụt corpus khi vượt 2k dòng.
   useEffect(() => {
+    let cancelled = false;
+
     (async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from("papers")
-        .select(
-          "id,title,authors,abstract,url,doi,venue,year,document_type,source,sources_seen,occurrences,ai_score,ai_summary_vi,ai_rationale,gap_mapped,energy_type,uq_method,ic_ec_decision,published_at,created_at"
-        )
-        .order("year", { ascending: false, nullsFirst: false })
-        .limit(2000);
-      if (error) setError(error.message);
-      else setPapers((data as Paper[]) ?? []);
-      setLoading(false);
+      setError(null);
+
+      const rows: Paper[] = [];
+
+      for (let from = 0; ; from += FETCH_PAGE_SIZE) {
+        const to = from + FETCH_PAGE_SIZE - 1;
+        const { data, error } = await supabase
+          .from("papers")
+          .select(PAPER_COLUMNS)
+          .order("year", { ascending: false, nullsFirst: false })
+          .range(from, to);
+
+        if (cancelled) return;
+
+        if (error) {
+          setError(error.message);
+          setLoading(false);
+          return;
+        }
+
+        const page = (data as Paper[]) ?? [];
+        rows.push(...page);
+
+        if (page.length < FETCH_PAGE_SIZE) break;
+      }
+
+      if (!cancelled) {
+        setPapers(rows);
+        setLoading(false);
+      }
     })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const sources = useMemo(() => {
@@ -56,6 +89,7 @@ export default function Dashboard() {
       if (filters.energy && p.energy_type !== filters.energy) return false;
       if (filters.decision && p.ic_ec_decision !== filters.decision) return false;
       if (filters.source && !(p.sources_seen ?? []).includes(filters.source)) return false;
+      if (filters.year && p.year !== Number(filters.year)) return false;
       if (filters.minScore > 0 && (p.ai_score ?? -1) < filters.minScore) return false;
       return true;
     });
@@ -66,9 +100,6 @@ export default function Dashboard() {
     });
     return out;
   }, [papers, filters]);
-
-  // Reset trang khi đổi filter
-  useEffect(() => setVisible(PAGE_SIZE), [filters]);
 
   return (
     <>
@@ -126,7 +157,7 @@ export default function Dashboard() {
           <div className="space-y-4">
             <StatsCards all={papers} filtered={filtered} />
             <Charts papers={filtered} />
-            <FilterBar filters={filters} onChange={setFilters} sources={sources} years={years} />
+            <FilterBar filters={filters} onChange={handleFiltersChange} sources={sources} years={years} />
 
             {/* Danh sách paper */}
             {filtered.length === 0 ? (
