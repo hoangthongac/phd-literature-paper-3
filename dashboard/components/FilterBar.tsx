@@ -25,12 +25,14 @@ type Props = {
 };
 
 function Select({
-  label, value, onChange, children,
-}: { label: string; value: string; onChange: (v: string) => void; children: React.ReactNode }) {
+  label, name, value, onChange, children,
+}: { label: string; name: string; value: string; onChange: (v: string) => void; children: React.ReactNode }) {
   return (
-    <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-mute">
+    <label htmlFor={name} className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-mute">
       {label}
       <select
+        id={name}
+        name={name}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="rounded-sm border border-hairline bg-canvas px-2.5 py-2 text-sm font-normal normal-case text-ink focus:border-primary focus:outline-none"
@@ -48,6 +50,8 @@ export default function FilterBar({ filters, onChange, sources, years }: Props) 
     <div className="border border-hairline bg-canvas p-5">
       {/* Search */}
       <input
+        id="paper-search"
+        name="paper-search"
         type="search"
         value={filters.q}
         onChange={(e) => set({ q: e.target.value })}
@@ -57,48 +61,48 @@ export default function FilterBar({ filters, onChange, sources, years }: Props) 
 
       {/* Filters */}
       <div className="mt-4 flex flex-wrap gap-3">
-        <Select label="Gap" value={filters.gap} onChange={(v) => set({ gap: v })}>
+        <Select label="Gap" name="gap" value={filters.gap} onChange={(v) => set({ gap: v })}>
           <option value="">Tất cả gap</option>
           {Object.entries(GAP_LABELS).map(([k, v]) => (
             <option key={k} value={k}>{v}</option>
           ))}
         </Select>
 
-        <Select label="Loại năng lượng" value={filters.energy} onChange={(v) => set({ energy: v })}>
+        <Select label="Loại năng lượng" name="energy" value={filters.energy} onChange={(v) => set({ energy: v })}>
           <option value="">Tất cả</option>
           {["Solar", "Wind", "Load", "Price", "Multi", "NA"].map((e) => (
             <option key={e} value={e}>{e}</option>
           ))}
         </Select>
 
-        <Select label="Quyết định" value={filters.decision} onChange={(v) => set({ decision: v })}>
+        <Select label="Quyết định" name="decision" value={filters.decision} onChange={(v) => set({ decision: v })}>
           <option value="">Tất cả</option>
           {Object.entries(DECISION_LABELS).map(([k, v]) => (
             <option key={k} value={k}>{v}</option>
           ))}
         </Select>
 
-        <Select label="Nguồn" value={filters.source} onChange={(v) => set({ source: v })}>
+        <Select label="Nguồn" name="source" value={filters.source} onChange={(v) => set({ source: v })}>
           <option value="">Tất cả nguồn</option>
           {sources.map((s) => (
             <option key={s} value={s}>{s}</option>
           ))}
         </Select>
 
-        <Select label="Năm" value={filters.year} onChange={(v) => set({ year: v })}>
+        <Select label="Năm" name="year" value={filters.year} onChange={(v) => set({ year: v })}>
           <option value="">Tất cả năm</option>
           {years.map((y) => (
             <option key={y} value={String(y)}>{y}</option>
           ))}
         </Select>
 
-        <Select label={`Điểm AI ≥ ${filters.minScore}`} value={String(filters.minScore)} onChange={(v) => set({ minScore: Number(v) })}>
+        <Select label={`Điểm AI ≥ ${filters.minScore}`} name="min-score" value={String(filters.minScore)} onChange={(v) => set({ minScore: Number(v) })}>
           {[0, 5, 6, 7, 8, 9].map((n) => (
             <option key={n} value={n}>{n === 0 ? "Mọi điểm" : `≥ ${n}`}</option>
           ))}
         </Select>
 
-        <Select label="Sắp xếp" value={filters.sort} onChange={(v) => set({ sort: v })}>
+        <Select label="Sắp xếp" name="sort" value={filters.sort} onChange={(v) => set({ sort: v })}>
           <option value="year_desc">Năm mới nhất</option>
           <option value="year_asc">Năm cũ nhất</option>
           <option value="score_desc">Điểm AI cao nhất</option>

@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Research Radar — CP × Renewable Energy Forecasting",
   description:
     "Dashboard theo dõi văn liệu Conformal Prediction cho dự báo năng lượng tái tạo (PRISMA Paper 3) — Hoàng Trung Thông, NCS HUTECH.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
